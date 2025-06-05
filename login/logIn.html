@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="login.css" />
+    <title>Login & Registration</title>
+</head>
+
+<body>
+    <header>
+        <h1>Melodic Sounds</h1>
+    </header>
+ <div class="wrapper">
+
+    <nav class="nav">
+        <div class="nav-logo">
+            <img src="piano.png" alt="">
+        </div>
+    </nav>
+
+    <div class="form-box">
+        
+        <div class="login-container" id="login">
+        <form id="loginForm" action="./includes/loginhandler.php" method="post">
+            <div class="top">
+                <span>Don't have an account? <a href="#" onclick="register()">Sign Up</a></span>
+                <header>Login</header>
+            </div>
+            <div class="input-box">
+                <input type="text" class="input-field" id="username" name="loginUsername" placeholder="Username" required>
+                <i class="bx bx-user"></i>
+            </div>
+            <div class="input-box">
+                <input type="password" class="input-field" id="password" name="loginPassword" placeholder="Password"required>
+                <i class="bx bx-lock-alt"></i>
+            </div>
+            <div class="input-box">
+                
+            </div>
+            <input type="submit" class="submit" value="Sign In">
+            <div id="loginOutcome"></div>
+        </form>
+    </div>
+
+
+    <div class="register-container" id="register">
+        <div class="top">
+            <span>Have an account? <a href="#" onclick="login()">Login</a></span>
+            <header>Sign Up</header>
+        </div>
+        
+        <form id="registerForm" action="includes/signuphandler.inc.php" method="post" >
+            <div class="input-box">
+                <input type="text" class="input-field" id="registerUsername" name="registerUsername" placeholder="Username" autocomplete="username" required>
+                <i class="bx bx-user"></i>
+            </div>
+    
+            <div class="input-box">
+                <input type="email" class="input-field" id="registerEmail" name="registerEmail" autocomplete="email" placeholder="Email" required>
+                <i class="bx bx-envelope"></i>
+            </div>
+            <div class="input-box">
+                <input type="password" class="input-field" id="registerPassword" name="registerPassword" autocomplete="current-password" placeholder="Password" required>
+                <i class="bx bx-lock-alt"></i>
+            </div>
+            <div class="input-box">
+                <input type="submit" class="submit" value="Register">
+            </div>
+            <div id="registerOutcome"></div>
+        </form>
+    </div>
+</div>
+    <script>
+        // document.getElementById('loginForm').addEventListener('submit', async (event) => {
+        //     event.preventDefault();
+        // });
+
+        // document.getElementById('registerForm').addEventListener('submit', async (event) => {
+        //     event.preventDefault();
+        // })
+
+    var x = document.getElementById("login");
+    var y = document.getElementById("register");
+
+    function login() {
+        x.style.left = "4px";
+        y.style.right = "-520px";
+        x.style.opacity = 1;
+        y.style.opacity = 0;
+    }
+
+    function register() {
+        x.style.left = "-510px";
+        y.style.right = "5px";
+        x.style.opacity = 0;
+        y.style.opacity = 1;
+    }
+
+    </script>
+</body>
+</html>
