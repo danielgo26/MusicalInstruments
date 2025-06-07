@@ -21,7 +21,31 @@
         </div>
     </nav>
 
-    <div class="form-box">        
+
+    <div class="form-box">
+        
+        <div class="login-container" id="login">
+        <form id="loginForm">
+            <div class="top">
+                <span>Don't have an account? <a href="#" onclick="register()">Sign Up</a></span>
+                <header>Login</header>
+            </div>
+            <div class="input-box">
+                <input type="text" class="input-field" id="username" name="username" placeholder="Username" required>
+                <i class="bx bx-user"></i>
+            </div>
+            <div class="input-box">
+                <input type="password" class="input-field" id="password" name="password" placeholder="Password"required>
+                <i class="bx bx-lock-alt"></i>
+            </div>
+            <div class="input-box">
+                <input type="submit" class="submit" value="Sign In">
+            </div>
+            <div id="outcome"></div>
+        </form>
+    </div>
+    
+    <!-- <div class="form-box">        
         <div class="login-container" id="login">
             <div class="top">
                 <span>Don't have an account? <a href="#" onclick="register()">Sign Up</a></span>
@@ -35,7 +59,7 @@
             </form>
 
             <div id="loginMessage"></div>
-        </div>
+        </div> -->
 
         <div class="register-container" id="register">
             <div class="top">
@@ -66,7 +90,7 @@
                     formData.append('registerEmail', email);
                     formData.append('registerPassword', password);
 
-                    fetch('/project/login/includes/signuphandler.inc.php', {
+                    fetch('/MusicalInstruments/login/includes/signuphandler.inc.php', {
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
@@ -99,7 +123,7 @@
                     formData.append('registerUsername', username);
                     formData.append('registerPassword', password);
 
-                    fetch('/project/login/includes/loginhandler.inc.php', {
+                    fetch('/MusicalInstruments/login/includes/loginhandler.inc.php', {
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'

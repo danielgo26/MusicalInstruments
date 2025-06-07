@@ -4,7 +4,7 @@ function registerUser(username, email, password) {
   formData.append('registerEmail', email);
   formData.append('registerPassword', password);
 
-  fetch('/project/login/includes/signuphandler.inc.php', {
+  fetch('/MusicalInstruments/login/includes/signuphandler.inc.php', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'

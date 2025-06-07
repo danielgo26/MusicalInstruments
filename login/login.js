@@ -3,7 +3,7 @@ function loginUser(username, password) {
   formData.append('loginUsername', username);
   formData.append('loginPassword', password);
 
-  fetch('/project/login/includes/loginhandler.inc.php', {
+  fetch('/MusicalInstruments/login/includes/loginhandler.inc.php', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
