@@ -44,15 +44,15 @@
           <h4>Sign Up</h4>
           <form id="registerForm">
             <div class="input-box">
-              <input class="input-field" type="text" id="username" placeholder="Username" required>
+              <input class="input-field" type="text" id="username1" placeholder="Username" required>
               <i class="bx bx-user"></i>
             </div>
             <div class="input-box">
-              <input class="input-field" type="email" id="email" placeholder="Email" required>
+              <input class="input-field" type="email" id="email1" placeholder="Email" required>
               <i class="bx bx-lock-alt"></i>
             </div>
             <div class="input-box">
-              <input class="input-field" type="password" id="password" placeholder="Password" required>
+              <input class="input-field" type="password" id="password1" placeholder="Password" required>
               <i class="bx bx-lock-alt"></i>
             </div>
             <div class="input-box">
@@ -66,9 +66,9 @@
           <script>
             document.getElementById('registerForm').addEventListener('submit', function (e) {
               e.preventDefault();
-              const username = document.getElementById('username').value;
-              const email = document.getElementById('email').value;
-              const password = document.getElementById('password').value;
+              const username = document.getElementById('username1').value;
+              const email = document.getElementById('email1').value;
+              const password = document.getElementById('password1').value;
 
               registerUser(username, email, password);
             });
@@ -104,13 +104,13 @@
               const username = document.getElementById('username').value;
               const password = document.getElementById('password').value;
 
-              loginUser(username, email, password);
+              loginUser(username, password);
             });
 
             function loginUser(username, password) {
               const formData = new URLSearchParams();
-              formData.append('registerUsername', username);
-              formData.append('registerPassword', password);
+              formData.append('loginUsername', username);
+              formData.append('loginPassword', password);
 
               fetch('/MusicalInstruments/login/includes/loginhandler.inc.php', {
                 method: 'POST',
