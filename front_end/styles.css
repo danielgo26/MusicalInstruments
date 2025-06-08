@@ -19,6 +19,11 @@ body{
  background-color: rgb(207, 188, 164);
 }
 
+.logo {
+    background-image: url('../login/piano_background.jpg');
+    background-size: cover;
+    background-position: center;
+}
 
 .try{
   margin-left: auto;
@@ -41,7 +46,6 @@ main{
   justify-content: center;
   min-height: 68vh;
   background: rgb(207, 188, 164);
-  /* background-color: wheat; */
 }
 
 #menu{
@@ -54,39 +58,50 @@ main{
   justify-content: space-between;
   align-items: center; 
   background-color: rgb(30, 29, 29);
-  /* background-color: rgb(255, 255, 255); */
   color: white;
-  /* color: #434343; */
 }
 
-.navbar a{
+.navbar a,
+.wrapper footer a {
   font-size:18px;
   color: #434343;
   text-decoration: none;
   font-weight: 500;
   margin-left: 30px;
   color: white;
-  /* color: #434343; */
 }
 
-.navbar a:hover{
+.navbar a:hover,
+.wrapper footer a:hover {
   color:#888888;
 }
 
 .wrapper {
   padding: 35px 40px;
-  border-radius: 20px;
-  background: #141414;
+  border-radius: 60px 60px 0 0;
+  background: #00000061;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 500px;
+  border: 3px solid black;
 }
-.wrapper header {
-  display: flex;
-  color: #B2B2B2;
-  align-items: center;
-  justify-content: space-between;
+
+#prev, #next {
+  background-color: transparent;
+  width: 0;
+  font-weight: bold;
+  font-size: 60px;
+  height: auto;
+  width: auto;
+  padding: 0;
+  border: none;
 }
+
 header h2 {
   font-size: 1.6rem;
 }
+
 header .column {
   display: flex;
   align-items: center;
@@ -103,13 +118,24 @@ header input {
 .volume-slider input {
   accent-color: #fff;
 }
+
+.keys-checkbox {
+  display: inline-flex;
+  color: #ffffff;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .keys-checkbox input {
   height: 30px;
   width: 60px;
   cursor: pointer;
   appearance: none;
   position: relative;
-  background: #4B4B4B
+  background: #4B4B4B;
+  border-radius: 15px;
+  margin-left: 10px;
+  
 }
 .keys-checkbox input::before {
   content: "";
@@ -131,11 +157,13 @@ header input {
   display: none;
   list-style: none;
   margin-top: 40px;
+  justify-content: center;
 }
 
 .piano-keys.active {
   display:flex;
   margin-bottom: 10px;
+  height: 280px;
 }
 
 .piano-keys .key {
@@ -147,21 +175,24 @@ header input {
 .piano-keys .black {
   z-index: 2;
   width: 44px;
-  height: 140px;
+  height: 170px;
   margin: 0 -22px 0 -22px;
   border-radius: 0 0 5px 5px;
   background: linear-gradient(#333, #000);
+  box-shadow: 4px 4px 10px rgb(0 0 0 / 62);
+  border: 3px solid #494949e3;
 }
 .piano-keys .black.active {
   box-shadow: inset -5px -10px 10px rgba(255,255,255,0.1);
   background:linear-gradient(to bottom, #000, #434343);
 }
 .piano-keys .white {
-  height: 230px;
-  width: 70px;
+  width: 90px;
   border-radius: 8px;
   border: 1px solid #000;
   background: linear-gradient(#fff 96%, #eee 4%);
+  box-shadow: 5px 5px 10px rgb(255 255 255 / 68);
+  border: 4px solid #d1d1d1db;
 }
 .piano-keys .white.active {
   box-shadow: inset -5px 5px 20px rgba(0,0,0,0.2);
@@ -171,7 +202,7 @@ header input {
   position: absolute;
   bottom: 20px;
   width: 100%;
-  color: #A2A2A2;
+  color: #000000;
   font-size: 1.13rem;
   text-align: center;
 }
@@ -226,14 +257,17 @@ header input {
   }
 }
 
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 footer .btn{
   font-size: 16px;
   padding: 0.25em;
   width: 150px;
-  margin: 0 0.7em;
-  margin-top: 20px;
-  /* outline: none; */
-  border: none;
+  margin: 0 0.7em;  
   border-radius: 1em;
   font-weight: 300;
   background-color: #4B4B4B;
@@ -241,6 +275,29 @@ footer .btn{
 }
 
 .btn:hover{
-    background-color:rgb(207, 188, 164);
+    background-color:#efefe9;
     color:#000;
+    cursor: pointer;
+}
+
+.background {
+    background-image: url('../login/piano_background.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    color: white;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+.blurred {
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }

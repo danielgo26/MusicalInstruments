@@ -8,6 +8,8 @@
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="logIn.css" />
   <title>Login & Registration</title>
+  <script src="login.js" defer></script>
+  <script src="register.js" defer></script>
 </head>
 
 <body>
@@ -72,33 +74,7 @@
 
               registerUser(username, email, password);
             });
-
-            function registerUser(username, email, password) {
-              const formData = new URLSearchParams();
-              formData.append('registerUsername', username);
-              formData.append('registerEmail', email);
-              formData.append('registerPassword', password);
-
-              fetch('/MusicalInstruments/login/includes/signuphandler.inc.php', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: formData.toString()
-              })
-                .then(response => {
-                  if (response.redirected) {
-                    window.location.href = response.url;
-                  } else {
-                    return response.text();
-                  }
-                  console.log("Successfully registered!");
-                })
-                .catch(err => {
-                  console.error('Registration failed:', err);
-                });
-            }
-
+            
             document.getElementById('loginForm').addEventListener('submit', function (e) {
               e.preventDefault();
               const username = document.getElementById('username').value;
@@ -106,32 +82,6 @@
 
               loginUser(username, password);
             });
-
-            function loginUser(username, password) {
-              const formData = new URLSearchParams();
-              formData.append('loginUsername', username);
-              formData.append('loginPassword', password);
-
-              fetch('/MusicalInstruments/login/includes/loginhandler.inc.php', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: formData.toString()
-              })
-                .then(response => {
-                  if (response.redirected) {
-                    window.location.href = response.url;
-                  } else {
-                    return response.text();
-                  }
-                  console.log("Successfully logged!");
-                })
-                .catch(err => {
-                  console.error('Login failed:', err);
-                });
-            }
-
           </script>
         </div>
       </div>
@@ -139,9 +89,6 @@
   </div>
 
   <script>
-
-    //var a = document.getElementById("loginBtn");
-    //var b = document.getElementById("registerBtn");
     var x = document.getElementById("login");
     var y = document.getElementById("register");
 

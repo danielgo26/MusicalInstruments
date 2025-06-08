@@ -22,7 +22,7 @@ const keyBoard = new Map([
 ]);
 
 const pianoKeys = document.querySelectorAll(".piano-keys .key"),
-volumeSlider = document.querySelector(".volume-slider input"),
+// volumeSlider = document.querySelector(".volume-slider input"),
 keysCheckbox = document.querySelector(".keys-checkbox input"),
 importMusicFile = document.getElementById('importMusicFile'),
 greeter = document.querySelector('#history #greeter'),
@@ -50,18 +50,16 @@ pianoKeys.forEach(key => {
             greeter.innerHTML = '';
         }
         playSound(key.getAttribute('data-note'));
-
-       
     })
 });
 let audio;
 
 
-//TO FIX
-const handleVolume = (e) => {
-    //window.sound = 0;
-    console.log(e.target.value)
-};
+// //TO FIX
+// const handleVolume = (e) => {
+//     //window.sound = 0;
+//     console.log(e.target.value)
+// };
 
 const showHideKeys = () => {
 pianoKeys.forEach(key => key.classList.toggle("hide"));
@@ -98,7 +96,7 @@ const importRecordedKeys = (file) => {
 }
 
 keysCheckbox.addEventListener("click", showHideKeys);
-volumeSlider.addEventListener("click", handleVolume);
+// volumeSlider.addEventListener("click", handleVolume);
 clear.addEventListener("click", () => {
     history.innerText = '';
     recordedKeys = [];
