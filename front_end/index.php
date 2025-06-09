@@ -23,14 +23,17 @@
                 </div>
 
                 <nav class="navbar">
-                        <!-- <a href="#" type="button" id="share">Search</a> -->
-                        <!-- <a href="#" id="clear">Clear</a> -->
-                        <!-- <a href="#" id="chooseFile">Choose file</a>
-                        <input type="file" id="importMusicFile" style="display:none;" />
-                        <a href="#">Lessons</a> -->
-                        <a href="../login/includes/logout.php">LogOut</a>
+                     <a href="../login/includes/logout.php">LogOut</a>
                 </nav>
 
+                <div class="floating-notes">
+                    <span class="note">♪</span>
+                    <span class="note">♬</span>
+                    <span class="note">♩</span>
+                    <span class="note">♫</span>
+                    <span class="note">♯</span>
+                    <span class="note">♪</span>
+                </div>
             </header>
 
             <div class="try" id="history">
@@ -46,7 +49,7 @@
 
                         <button class="btn" href="#" id="chooseFile">Choose file</button>
                         <input class="btn" type="file" id="importMusicFile" style="display:none;" />
-                        <button class="btn">Lessons</button>
+                        <button class="btn" id="lessons">Lessons</button>
 
                         <div class="column keys-checkbox">
                             <span>Show Keys</span><input type="checkbox" checked>

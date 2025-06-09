@@ -28,6 +28,7 @@ importMusicFile = document.getElementById('importMusicFile'),
 greeter = document.querySelector('#history #greeter'),
 clear = document.querySelector('#clear'),
 chooseFile = document.querySelector('#chooseFile');
+lesson = document.querySelector('#lessons')
 
 const keys = document.querySelectorAll(".key");
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -54,13 +55,6 @@ pianoKeys.forEach(key => {
 });
 let audio;
 
-
-// //TO FIX
-// const handleVolume = (e) => {
-//     //window.sound = 0;
-//     console.log(e.target.value)
-// };
-
 const showHideKeys = () => {
 pianoKeys.forEach(key => key.classList.toggle("hide"));
 };
@@ -85,6 +79,22 @@ const replayRecordedKeys = (recordedKeys) => {
     });
 }
 
+const importRecordedKeysForRead = (file) => {
+    const reader = new FileReader();
+    history.innerText = '';
+    reader.onload = (ev) => {
+        const recordedKeys = JSON.parse(ev.target.result);
+
+        if(recordedKeys.length === 0) return;
+
+        recordedKeys.forEach(key => {
+        history.innerText += ` ${key.note} `;
+    });
+    }
+
+    reader.readAsText(file);
+}
+
 const importRecordedKeys = (file) => {
     const reader = new FileReader();
     reader.onload = (ev) => {
@@ -102,7 +112,16 @@ clear.addEventListener("click", () => {
     recordedKeys = [];
 })
 
+let fileSource = null;
+
 chooseFile.addEventListener("click" , (ev) => {
+    fileSource = "chooseFile";
+    ev.preventDefault();
+    importMusicFile.click();
+});
+
+lesson.addEventListener("click" , (ev) => {
+    fileSource = "lessons";
     ev.preventDefault();
     importMusicFile.click();
 });
@@ -111,10 +130,17 @@ importMusicFile.addEventListener('change', (e) => {
     const file = e.target.files[0];
     
     if (file.type === "application/json") {
-        importRecordedKeys(file);
+        if (fileSource == "chooseFile") {
+            importRecordedKeys(file);
+        }
+        if (fileSource == "lessons") {
+            importRecordedKeysForRead(file);
+        }
+
+        fileSource = null;
+        importMusicFile.value = '';
     }
 });
-//
 
 keys.forEach((div) => {
     div.addEventListener('click', (event) => {
@@ -188,7 +214,6 @@ document.querySelector('#preview').onclick = () => {
             playSound(key.note)
         }, key.time * 1000);
     });
-
 }
 
 document.querySelector('#export').onclick = () => {
@@ -276,20 +301,3 @@ function changePiano(pos) {
     })
    
 }
-
-
-document.querySelector('#share').addEventListener('click', (ev) => {
-    const blob = new Blob([JSON.stringify(recordedKeys)], {'type': 'application/json'});
-   
-    const url = URL.createObjectURL(blob);
-
-    const element = document.createElement('a');
-
-    element.href = url;
-    element.textContent = "daka";
-    element.onclick = () => {
-        element.download = element.textContent;
-    }
-    document.body.appendChild(element);
-
-})
