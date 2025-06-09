@@ -65,7 +65,6 @@ const pressedKey = (e) => {
     
         history.innerText += ` ${keyBoard[e.key]} `;
     }
-
 };
 
 const replayRecordedKeys = (recordedKeys) => {
@@ -81,13 +80,14 @@ const replayRecordedKeys = (recordedKeys) => {
 
 const importRecordedKeysForRead = (file) => {
     const reader = new FileReader();
-    history.innerText = '';
+
     reader.onload = (ev) => {
-        const recordedKeys = JSON.parse(ev.target.result);
+        const keys = JSON.parse(ev.target.result);
+        recordedKeys = keys;
+        
+        if(keys.length === 0) return;
 
-        if(recordedKeys.length === 0) return;
-
-        recordedKeys.forEach(key => {
+        keys.forEach(key => {
         history.innerText += ` ${key.note} `;
     });
     }
@@ -106,7 +106,7 @@ const importRecordedKeys = (file) => {
 }
 
 keysCheckbox.addEventListener("click", showHideKeys);
-// volumeSlider.addEventListener("click", handleVolume);
+
 clear.addEventListener("click", () => {
     history.innerText = '';
     recordedKeys = [];
@@ -123,6 +123,7 @@ chooseFile.addEventListener("click" , (ev) => {
 lesson.addEventListener("click" , (ev) => {
     fileSource = "lessons";
     ev.preventDefault();
+    clear.click();
     importMusicFile.click();
 });
 

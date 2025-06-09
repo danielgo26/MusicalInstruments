@@ -14,7 +14,6 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     overflow: hidden;
-    background-color: rgb(207, 188, 164);
 }
 
 h1 {
@@ -125,18 +124,6 @@ h4 {
 }
 
 .input-field {
-    /* font-size: 15px;
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
-    height: 50px;
-    width: 100%;
-    padding: 0 10px 0 45px;
-    border: none;
-    border-radius: 30px;
-    outline: none;
-    transition: .2s ease; */
-
-
     padding: 0 10px 0 45px;
     border: none;
     border-radius: 18px;
