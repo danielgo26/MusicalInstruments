@@ -4,24 +4,24 @@ function registerUser(username, email, password) {
   formData.append('registerEmail', email);
   formData.append('registerPassword', password);
 
-  fetch('/MusicalInstruments/login/includes/signuphandler.inc.php', {
+  fetch('./includes/signuphandler.inc.php', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
     body: formData.toString()
   })
-  .then(response => {
-    if (response.redirected) {
-      window.location.href = response.url;
-    } else {
-      return response.text();
-    }
-    console.log("Successfully registered!");
-  })
-  .catch(err => {
-    console.error('Registration failed:', err);
-  });
+    .then(response => {
+      if (response.redirected) {
+        window.location.href = response.url;
+      } else {
+        return response.text();
+      }
+      console.log("Successfully registered!");
+    })
+    .catch(err => {
+      console.error('Registration failed:', err);
+    });
 }
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -32,7 +32,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const errorBox = document.getElementById('messages');
     if (errorBox) {
       errorBox.textContent = 'Successfully registered!';
-      errorBox.style.color = 'green'; 
+      errorBox.style.color = 'green';
     }
   }
 });

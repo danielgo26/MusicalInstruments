@@ -22,7 +22,6 @@ const keyBoard = new Map([
 ]);
 
 const pianoKeys = document.querySelectorAll(".piano-keys .key"),
-// volumeSlider = document.querySelector(".volume-slider input"),
 keysCheckbox = document.querySelector(".keys-checkbox input"),
 importMusicFile = document.getElementById('importMusicFile'),
 greeter = document.querySelector('#history #greeter'),
@@ -35,7 +34,6 @@ const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 const destination = audioContext.createMediaStreamDestination();
 const mediaRecorder = new MediaRecorder(destination.stream);
 
-//TESTING
 const history = document.querySelector('#history');
 
 let recordedChunks = [];
@@ -44,7 +42,7 @@ let startTime = 0;
 let allKeys = [];
 
 pianoKeys.forEach(key => {
-    allKeys.push(key.getAttribute('data-note')); // adding data-note value to the allKeys array
+    allKeys.push(key.getAttribute('data-note')); 
     
     key.addEventListener("click", () => {
         if(recordedKeys.length === 0) {
@@ -62,7 +60,6 @@ pianoKeys.forEach(key => key.classList.toggle("hide"));
 const pressedKey = (e) => {
     if (allKeys.includes(e.key))  {
         playSound(keyBoard[e.key]);
-    
         history.innerText += ` ${keyBoard[e.key]} `;
     }
 };
@@ -154,7 +151,6 @@ keys.forEach((div) => {
 
         console.log(audioContext.currentTime - startTime);
 
-        //ADDED recently
         history.innerText += ` ${div.getAttribute('data-note')} `;
 
         playSound(div.getAttribute('data-note'));
@@ -294,15 +290,11 @@ prev.addEventListener('click', (ev) => {
 })
 
 function changePiano(pos) {
-    
     document.getElementById(`piano-${pos}`).classList.add('active');
-
     const visibleArr = Array.from(document.querySelectorAll(`#piano-${pos} div`));
-
     const keys = Array.from(keyBoard.keys());
     visibleArr.forEach((el, index) => {
         if (index < keys.length) 
             keyBoard.set(keys[index], el.getAttribute('data-note'))
     })
-   
 }

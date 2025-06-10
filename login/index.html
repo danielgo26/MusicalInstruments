@@ -3,7 +3,6 @@
 
 <head>
   <meta charset="UTF-8">
-  <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="logIn.css" />
@@ -25,11 +24,13 @@
           <form id="loginForm">
             <h4>Login</h4>
             <div class="input-box">
-              <input type="text" class="input-field" autocomplete="username" id="username" name="username" placeholder="Username" required>
+              <input type="text" class="input-field" autocomplete="username" id="username" name="username"
+                placeholder="Username" required>
               <i class="bx bx-user"></i>
             </div>
             <div class="input-box">
-              <input type="password" class="input-field" autocomplete="current-password" id="password" name="password" placeholder="Password" required>
+              <input type="password" class="input-field" autocomplete="current-password" id="password" name="password"
+                placeholder="Password" required>
               <i class="bx bx-lock-alt"></i>
             </div>
             <div class="input-box">
@@ -46,15 +47,15 @@
           <h4>Sign Up</h4>
           <form id="registerForm">
             <div class="input-box">
-              <input class="input-field" type="text" id="username1" placeholder="Username" required>
+              <input class="input-field" type="text" id="registerUsername" placeholder="Username" required>
               <i class="bx bx-user"></i>
             </div>
             <div class="input-box">
-              <input class="input-field" type="email" id="email1" placeholder="Email" required>
+              <input class="input-field" type="email" id="registerEmail" placeholder="Email" required>
               <i class="bx bx-lock-alt"></i>
             </div>
             <div class="input-box">
-              <input class="input-field" type="password" id="password1" placeholder="Password" required>
+              <input class="input-field" type="password" id="registerPassword" placeholder="Password" required>
               <i class="bx bx-lock-alt"></i>
             </div>
             <div class="input-box">
@@ -68,13 +69,13 @@
           <script>
             document.getElementById('registerForm').addEventListener('submit', function (e) {
               e.preventDefault();
-              const username = document.getElementById('username1').value;
-              const email = document.getElementById('email1').value;
-              const password = document.getElementById('password1').value;
+              const username = document.getElementById('registerUsername').value;
+              const email = document.getElementById('registerEmail').value;
+              const password = document.getElementById('registerPassword').value;
 
               registerUser(username, email, password);
             });
-            
+
             document.getElementById('loginForm').addEventListener('submit', function (e) {
               e.preventDefault();
               const username = document.getElementById('username').value;
@@ -107,9 +108,7 @@
       x.style.zIndex = 10;
       y.style.zIndex = 11;
     }
-
   </script>
-
 </body>
 
 </html>

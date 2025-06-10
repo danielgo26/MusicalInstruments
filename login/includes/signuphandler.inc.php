@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $pdo = null;
         header("Location: ../index.html?success=registered");
         exit();
-    }catch(PDOException $e) {
+    } catch(PDOException $e) {
         die("Query failed: " . $e->getMessage());
     }
 }

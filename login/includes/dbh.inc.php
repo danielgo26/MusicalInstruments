@@ -5,7 +5,6 @@ $username = 'root';
 $password = '';
 
 try {
-    //;dbname=$dbname
     $pdo = new PDO("mysql:host=$host", $username, $password);
 
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -13,7 +12,6 @@ try {
 
     $pdo->exec("CREATE DATABASE IF NOT EXISTS `$dbname` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
 
-    // Step 3: Connect to the newly created database
     $pdo->exec("USE `$dbname`");
 
      $pdo->exec("
