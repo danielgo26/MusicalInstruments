@@ -44,7 +44,7 @@ db.once('open', function() {
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'jordan.radanov94@gmail.com',
+        user: 'danailtodorov440@gmail.com',
         pass: 'tuyk sgfa icqy kmqu'
     }
 });

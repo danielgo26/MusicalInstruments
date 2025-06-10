@@ -22,12 +22,13 @@ const keyBoard = new Map([
 ]);
 
 const pianoKeys = document.querySelectorAll(".piano-keys .key"),
-volumeSlider = document.querySelector(".volume-slider input"),
+// volumeSlider = document.querySelector(".volume-slider input"),
 keysCheckbox = document.querySelector(".keys-checkbox input"),
 importMusicFile = document.getElementById('importMusicFile'),
 greeter = document.querySelector('#history #greeter'),
 clear = document.querySelector('#clear'),
 chooseFile = document.querySelector('#chooseFile');
+lesson = document.querySelector('#lessons')
 
 const keys = document.querySelectorAll(".key");
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -50,18 +51,9 @@ pianoKeys.forEach(key => {
             greeter.innerHTML = '';
         }
         playSound(key.getAttribute('data-note'));
-
-       
     })
 });
 let audio;
-
-
-//TO FIX
-const handleVolume = (e) => {
-    //window.sound = 0;
-    console.log(e.target.value)
-};
 
 const showHideKeys = () => {
 pianoKeys.forEach(key => key.classList.toggle("hide"));
@@ -73,7 +65,6 @@ const pressedKey = (e) => {
     
         history.innerText += ` ${keyBoard[e.key]} `;
     }
-
 };
 
 const replayRecordedKeys = (recordedKeys) => {
@@ -87,6 +78,23 @@ const replayRecordedKeys = (recordedKeys) => {
     });
 }
 
+const importRecordedKeysForRead = (file) => {
+    const reader = new FileReader();
+
+    reader.onload = (ev) => {
+        const keys = JSON.parse(ev.target.result);
+        recordedKeys = keys;
+        
+        if(keys.length === 0) return;
+
+        keys.forEach(key => {
+        history.innerText += ` ${key.note} `;
+    });
+    }
+
+    reader.readAsText(file);
+}
+
 const importRecordedKeys = (file) => {
     const reader = new FileReader();
     reader.onload = (ev) => {
@@ -98,14 +106,24 @@ const importRecordedKeys = (file) => {
 }
 
 keysCheckbox.addEventListener("click", showHideKeys);
-volumeSlider.addEventListener("click", handleVolume);
+
 clear.addEventListener("click", () => {
     history.innerText = '';
     recordedKeys = [];
 })
 
+let fileSource = null;
+
 chooseFile.addEventListener("click" , (ev) => {
+    fileSource = "chooseFile";
     ev.preventDefault();
+    importMusicFile.click();
+});
+
+lesson.addEventListener("click" , (ev) => {
+    fileSource = "lessons";
+    ev.preventDefault();
+    clear.click();
     importMusicFile.click();
 });
 
@@ -113,10 +131,17 @@ importMusicFile.addEventListener('change', (e) => {
     const file = e.target.files[0];
     
     if (file.type === "application/json") {
-        importRecordedKeys(file);
+        if (fileSource == "chooseFile") {
+            importRecordedKeys(file);
+        }
+        if (fileSource == "lessons") {
+            importRecordedKeysForRead(file);
+        }
+
+        fileSource = null;
+        importMusicFile.value = '';
     }
 });
-//
 
 keys.forEach((div) => {
     div.addEventListener('click', (event) => {
@@ -190,7 +215,6 @@ document.querySelector('#preview').onclick = () => {
             playSound(key.note)
         }, key.time * 1000);
     });
-
 }
 
 document.querySelector('#export').onclick = () => {
@@ -278,20 +302,3 @@ function changePiano(pos) {
     })
    
 }
-
-
-document.querySelector('#share').addEventListener('click', (ev) => {
-    const blob = new Blob([JSON.stringify(recordedKeys)], {'type': 'application/json'});
-   
-    const url = URL.createObjectURL(blob);
-
-    const element = document.createElement('a');
-
-    element.href = url;
-    element.textContent = "daka";
-    element.onclick = () => {
-        element.download = element.textContent;
-    }
-    document.body.appendChild(element);
-
-})

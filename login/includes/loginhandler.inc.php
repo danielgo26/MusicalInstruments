@@ -27,15 +27,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             exit();
         } else {
-            
-            header("Location: ../login.html?error=invalidcredentials");
+            header("Location: ../index.html?error=invalidcredentials");
             exit();
         }
     } catch (PDOException $e) {
         die("Query failed: " . $e->getMessage());
     }
 } else {
-    header("Location: ../login.html");
+    header("Location: ../index.html");
     exit();
 }
 ?>

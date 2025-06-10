@@ -20,18 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $user->createUser($usr, $email, $hashedPwd);
 
-        // session_start();
-        // $_SESSION['user_id'] = $user->findUserByUsername($usr)['id'];
-        // $_SESSION['username'] = $usr;
-
-        
         $pdo = null;
-        header("Location: ../login.html");
+        header("Location: ../index.html?success=registered");
         exit();
     }catch(PDOException $e) {
         die("Query failed: " . $e->getMessage());
     }
 }
 else {
-    header("Location: ../login.html");
+    header("Location: ../index.html");
 }

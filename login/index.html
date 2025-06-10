@@ -1,154 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="login.css" />
-    <title>Login & Registration</title>
+  <meta charset="UTF-8">
+  <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="logIn.css" />
+  <title>Login & Registration</title>
+  <script src="login.js" defer></script>
+  <script src="register.js" defer></script>
 </head>
 
 <body>
-    <header>
-        <h1>Melodic Sounds</h1>
-    </header>
- <div class="wrapper">
+  <div class="background">
+    <div class="blurred">
+      <header>
+        <h1>Melody Mind</h1>
+      </header>
 
-    <nav class="nav">
-        <div class="nav-logo">
-            <img src="piano.png" alt="">
-        </div>
-    </nav>
+      <div class="form-box">
 
-    <div class="form-box">        
         <div class="login-container" id="login">
-            <div class="top">
-                <span>Don't have an account? <a href="#" onclick="register()">Sign Up</a></span>
-                <header>Login</header>
+          <form id="loginForm">
+            <h4>Login</h4>
+            <div class="input-box">
+              <input type="text" class="input-field" autocomplete="username" id="username" name="username" placeholder="Username" required>
+              <i class="bx bx-user"></i>
             </div>
-
-            <form id="loginForm">
-                <input type="text" id="loginUsername" placeholder="Username" required>
-                <input type="password" id="loginPassword" placeholder="Password" required>
-                <button type="submit">Login</button>
-            </form>
-
-            <div id="loginMessage"></div>
+            <div class="input-box">
+              <input type="password" class="input-field" autocomplete="current-password" id="password" name="password" placeholder="Password" required>
+              <i class="bx bx-lock-alt"></i>
+            </div>
+            <div class="input-box">
+              <input type="submit" class="input-field login-btn" value="Sign In">
+            </div>
+            <div id="messages"></div>
+            <div class="top">
+              <span>Don't have an account? <a href="#" onclick="register()">Sign Up</a></span>
+            </div>
+          </form>
         </div>
 
         <div class="register-container" id="register">
-            <div class="top">
-                <span>Have an account? <a href="#" onclick="login()">Login</a></span>
-                <header>Sign Up</header>
+          <h4>Sign Up</h4>
+          <form id="registerForm">
+            <div class="input-box">
+              <input class="input-field" type="text" id="username1" placeholder="Username" required>
+              <i class="bx bx-user"></i>
             </div>
+            <div class="input-box">
+              <input class="input-field" type="email" id="email1" placeholder="Email" required>
+              <i class="bx bx-lock-alt"></i>
+            </div>
+            <div class="input-box">
+              <input class="input-field" type="password" id="password1" placeholder="Password" required>
+              <i class="bx bx-lock-alt"></i>
+            </div>
+            <div class="input-box">
+              <input type="submit" class="input-field login-btn" value="Register">
+            </div>
+            <div class="top">
+              <span>Have an account? <a href="#" onclick="login()">Login</a></span>
+            </div>
+          </form>
 
-            <form id="registerForm">
-                <input type="text" id="username" placeholder="Username" required>
-                <input type="email" id="email" placeholder="Email" required>
-                <input type="password" id="password" placeholder="Password" required>
-                <button type="submit">Register</button>
-            </form>
+          <script>
+            document.getElementById('registerForm').addEventListener('submit', function (e) {
+              e.preventDefault();
+              const username = document.getElementById('username1').value;
+              const email = document.getElementById('email1').value;
+              const password = document.getElementById('password1').value;
 
-                <script>
-                  document.getElementById('registerForm').addEventListener('submit', function (e) {
-                    e.preventDefault();
-                    const username = document.getElementById('username').value;
-                    const email    = document.getElementById('email').value;
-                    const password = document.getElementById('password').value;
-                
-                    registerUser(username, email, password);
-                  });
+              registerUser(username, email, password);
+            });
+            
+            document.getElementById('loginForm').addEventListener('submit', function (e) {
+              e.preventDefault();
+              const username = document.getElementById('username').value;
+              const password = document.getElementById('password').value;
 
-                  function registerUser(username, email, password) {
-                    const formData = new URLSearchParams();
-                    formData.append('registerUsername', username);
-                    formData.append('registerEmail', email);
-                    formData.append('registerPassword', password);
-
-                    fetch('/project/login/includes/signuphandler.inc.php', {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                      },
-                      body: formData.toString()
-                    })
-                    .then(response => {
-                      if (response.redirected) {
-                        window.location.href = response.url;
-                      } else {
-                        return response.text();
-                      }
-                      console.log("Successfully registered!");
-                    })
-                    .catch(err => {
-                      console.error('Registration failed:', err);
-                    });
-                }
-
-                  document.getElementById('loginForm').addEventListener('submit', function (e) {
-                    e.preventDefault();
-                    const username = document.getElementById('username').value;
-                    const password = document.getElementById('password').value;
-                
-                    loginUser(username, email, password);
-                  });
-
-                  function loginUser(username, password) {
-                    const formData = new URLSearchParams();
-                    formData.append('registerUsername', username);
-                    formData.append('registerPassword', password);
-
-                    fetch('/project/login/includes/loginhandler.inc.php', {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                      },
-                      body: formData.toString()
-                    })
-                    .then(response => {
-                      if (response.redirected) {
-                        window.location.href = response.url;
-                      } else {
-                        return response.text();
-                      }
-                      console.log("Successfully logged!");
-                    })
-                    .catch(err => {
-                      console.error('Login failed:', err);
-                    });
-                }
-                    
-                </script>
+              loginUser(username, password);
+            });
+          </script>
         </div>
+      </div>
     </div>
+  </div>
 
-    <script>
-        
-        //var a = document.getElementById("loginBtn");
-        //var b = document.getElementById("registerBtn");
-        var x = document.getElementById("login");
-        var y = document.getElementById("register");
+  <script>
+    var x = document.getElementById("login");
+    var y = document.getElementById("register");
 
-        function login() {
-            x.style.left = "4px";
-            y.style.right = "-520px";
-            // a.className += " white-btn";
-            // b.className = "btn";
-            x.style.opacity = 1;
-            y.style.opacity = 0;
-        }
+    function login() {
+      x.style.opacity = 1;
+      y.style.opacity = 0;
 
-        function register() {
-            x.style.left = "-510px";
-            y.style.right = "5px";
-            // a.className = "btn";
-            // b.className += " white-btn";
-            x.style.opacity = 0;
-            y.style.opacity = 1;
-        }
+      x.style.zIndex = 11;
+      y.style.zIndex = 10;
+    }
 
-    </script>
+    function register() {
+      x.style.opacity = 0;
+      y.style.opacity = 1;
+
+      x.style.zIndex = 10;
+      y.style.zIndex = 11;
+    }
+
+  </script>
 
 </body>
+
 </html>
