@@ -238,6 +238,10 @@ function exportRecordedKeys() {
     newElement.href = url;
 
     const fileName = window.prompt('Save file as:');
+
+    if (fileName === null || fileName.trim() === "") {
+        return;
+    }
     newElement.download = fileName;
    
     document.body.appendChild(newElement);

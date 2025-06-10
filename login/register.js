@@ -32,6 +32,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const errorBox = document.getElementById('messages');
     if (errorBox) {
       errorBox.textContent = 'Successfully registered!';
+      errorBox.style.color = 'green'; 
     }
   }
 });
