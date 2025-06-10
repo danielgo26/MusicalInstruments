@@ -22,3 +22,15 @@ function loginUser(username, password) {
     console.error('Login failed:', err);
   });
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const error = params.get('error');
+
+  if (error === 'invalidcredentials') {
+    const errorBox = document.getElementById('messages');
+    if (errorBox) {
+      errorBox.textContent = 'Invalid username or password.';
+    }
+  }
+});

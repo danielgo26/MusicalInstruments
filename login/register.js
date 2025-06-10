@@ -23,3 +23,15 @@ function registerUser(username, email, password) {
     console.error('Registration failed:', err);
   });
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const success = params.get('success');
+
+  if (success === 'registered') {
+    const errorBox = document.getElementById('messages');
+    if (errorBox) {
+      errorBox.textContent = 'Successfully registered!';
+    }
+  }
+});

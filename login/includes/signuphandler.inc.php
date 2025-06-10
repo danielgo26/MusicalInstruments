@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user->createUser($usr, $email, $hashedPwd);
 
         $pdo = null;
-        header("Location: ../index.html");
+        header("Location: ../index.html?success=registered");
         exit();
     }catch(PDOException $e) {
         die("Query failed: " . $e->getMessage());
