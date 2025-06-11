@@ -1,6 +1,11 @@
 <?php
     session_start();
 
+    if ($_SESSION['username'] == null) {
+        header("Location: ../login/index.html"); 
+        exit();
+    }
+
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
@@ -41,6 +46,7 @@
             </div>
 
             <div class="wrapper">
+                <div id="piano-num">Piano 1</div>
                 <footer>
                         <button class="btn" id="prev"><</button>
                         <button class="btn" id="preview">Preview</button>
@@ -55,7 +61,6 @@
                             <span>Show Keys</span><input type="checkbox" checked>
                         </div>
                         <button class="btn" id="next">></button>
-
                 </footer>
 
                 <div id="piano-1" class="piano-keys">

@@ -124,6 +124,12 @@ main {
   }
 }
 
+#piano-num {
+  font-size:22px;
+  position: relative;
+  top: -20px;
+}
+
 .wrapper footer a {
   font-size:18px;
   color: #434343;
