@@ -21,6 +21,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user->createUser($usr, $email, $hashedPwd);
 
         $pdo = null;
+
+        $to = $email;
+        $subject = "Registration";
+        $message = "You successfully registered into Melody Mind. Get ready to learn playing the piano with us!";
+        $headers = "From: wcourse87@gmail.com";
+
+        if (mail($to, $subject, $message, $headers)) {
+            echo "Email sent successfully.";
+        } else {
+            echo "Error while sending email.";
+        } 
+
         header("Location: ../index.html?success=registered");
         exit();
     } catch(PDOException $e) {
