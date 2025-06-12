@@ -210,6 +210,10 @@ document.addEventListener('keydown', (ev) => {
 });
 
 document.querySelector('#preview').onclick = () => {
+    if (recordedKeys.length == 0) {
+        return;
+    }
+
     startTime = recordedKeys[0].time;
 
     recordedKeys.forEach(key => {
@@ -223,13 +227,12 @@ document.querySelector('#preview').onclick = () => {
 document.querySelector('#export').onclick = () => {
     mediaRecorder.stop();
     console.log('Recording stopped');
-    exportRecordedKeys();
 
     recordedKeys.forEach((key) => {
-        key.time = recordedKeys[0].time;
+        key.time -= recordedKeys[0].time;
     });
 
-    startTime = 0;
+    exportRecordedKeys();
 }
 
 function exportRecordedKeys() {
@@ -250,10 +253,7 @@ function exportRecordedKeys() {
     document.body.appendChild(newElement);
     newElement.click();
     window.URL.revokeObjectURL(url);
-
-    recordedKeys = [];
 }
-
 
 mediaRecorder.ondataavailable = (event) => {
     if (event.data.size > 0) {
