@@ -16,7 +16,7 @@ try {
 
      $pdo->exec("
         CREATE TABLE IF NOT EXISTS users (
-            username VARCHAR(20),
+            username VARCHAR(20) UNIQUE,
             email VARCHAR(30) NOT NULL,
             password VARCHAR(255),
             PRIMARY KEY (username, email)
