@@ -5,9 +5,9 @@ const keyBoard = new Map([
     ['2', 'Eb1'],
     ['e', 'E1'],
     ['r', 'F1'],
-    ['4', 'Gb1'], 
+    ['4', 'Gb1'],
     ['t', 'G1'],
-    ['5', 'Ab1'], 
+    ['5', 'Ab1'],
     ['y', 'A1'],
     ['7', 'Bb1'],
     ['u', 'B1'],
@@ -22,17 +22,18 @@ const keyBoard = new Map([
 ]);
 
 const pianoKeys = document.querySelectorAll(".piano-keys .key"),
-keysCheckbox = document.querySelector(".keys-checkbox input"),
-importMusicFile = document.getElementById('importMusicFile'),
-greeter = document.querySelector('#history #greeter'),
-clear = document.querySelector('#clear'),
-chooseFile = document.querySelector('#chooseFile');
+    keysCheckbox = document.querySelector(".keys-checkbox input"),
+    importMusicFile = document.getElementById('importMusicFile'),
+    greeter = document.querySelector('#history #greeter'),
+    clear = document.querySelector('#clear'),
+    chooseFile = document.querySelector('#chooseFile');
 lesson = document.querySelector('#lessons')
 
 const keys = document.querySelectorAll(".key");
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 const destination = audioContext.createMediaStreamDestination();
 const mediaRecorder = new MediaRecorder(destination.stream);
+const pianoNum = document.getElementById('piano-num');
 
 const history = document.querySelector('#history');
 
@@ -42,10 +43,10 @@ let startTime = 0;
 let allKeys = [];
 
 pianoKeys.forEach(key => {
-    allKeys.push(key.getAttribute('data-note')); 
-    
+    allKeys.push(key.getAttribute('data-note'));
+
     key.addEventListener("click", () => {
-        if(recordedKeys.length === 0) {
+        if (recordedKeys.length === 0) {
             greeter.innerHTML = '';
         }
         playSound(key.getAttribute('data-note'));
@@ -54,11 +55,11 @@ pianoKeys.forEach(key => {
 let audio;
 
 const showHideKeys = () => {
-pianoKeys.forEach(key => key.classList.toggle("hide"));
+    pianoKeys.forEach(key => key.classList.toggle("hide"));
 };
 
 const pressedKey = (e) => {
-    if (allKeys.includes(e.key))  {
+    if (allKeys.includes(e.key)) {
         playSound(keyBoard[e.key]);
         history.innerText += ` ${keyBoard[e.key]} `;
     }
@@ -66,7 +67,7 @@ const pressedKey = (e) => {
 
 const replayRecordedKeys = (recordedKeys) => {
 
-    if(recordedKeys.length === 0) return;
+    if (recordedKeys.length === 0) return;
 
     recordedKeys.forEach(key => {
         setTimeout(() => {
@@ -81,12 +82,12 @@ const importRecordedKeysForRead = (file) => {
     reader.onload = (ev) => {
         const keys = JSON.parse(ev.target.result);
         recordedKeys = keys;
-        
-        if(keys.length === 0) return;
+
+        if (keys.length === 0) return;
 
         keys.forEach(key => {
-        history.innerText += ` ${key.note} `;
-    });
+            history.innerText += ` ${key.note} `;
+        });
     }
 
     reader.readAsText(file);
@@ -111,13 +112,13 @@ clear.addEventListener("click", () => {
 
 let fileSource = null;
 
-chooseFile.addEventListener("click" , (ev) => {
+chooseFile.addEventListener("click", (ev) => {
     fileSource = "chooseFile";
     ev.preventDefault();
     importMusicFile.click();
 });
 
-lesson.addEventListener("click" , (ev) => {
+lesson.addEventListener("click", (ev) => {
     fileSource = "lessons";
     ev.preventDefault();
     clear.click();
@@ -126,7 +127,7 @@ lesson.addEventListener("click" , (ev) => {
 
 importMusicFile.addEventListener('change', (e) => {
     const file = e.target.files[0];
-    
+
     if (file.type === "application/json") {
         if (fileSource == "chooseFile") {
             importRecordedKeys(file);
@@ -166,12 +167,12 @@ const playSound = (note) => {
         audioContext.resume();
     }
 
-    audio = new Audio(`../music_sounds/${note}.mp3`); 
+    audio = new Audio(`../music_sounds/${note}.mp3`);
 
-    const clickedKey = document.querySelector(`[data-note="${note}"]`); 
+    const clickedKey = document.querySelector(`[data-note="${note}"]`);
     if (clickedKey) {
-        clickedKey.classList.add("active"); 
-        setTimeout(() => { 
+        clickedKey.classList.add("active");
+        setTimeout(() => {
             clickedKey.classList.remove("active");
         }, 150);
     }
@@ -183,28 +184,34 @@ const playSound = (note) => {
 }
 
 document.addEventListener('keydown', (ev) => {
-    if(ev.repeat) 
+    if (ev.repeat)
         return;
-    
-    const key = keyBoard.get(ev.key);
-    if(key)  {
-        playSound(key);
 
-        if (recordedKeys.length === 0) {
-            history.innerHTML = '';
+    if (ev.key == "ArrowLeft") {
+        prev.click();
+    } else if (ev.key == "ArrowRight") {
+        next.click();
+    } else {
+        const key = keyBoard.get(ev.key);
+        if (key) {
+            playSound(key);
+
+            if (recordedKeys.length === 0) {
+                history.innerHTML = '';
+            }
+            recordedKeys.push({
+                note: key,
+                time: audioContext.currentTime - startTime,
+            })
+
+            history.innerText += ` ${key} `;
         }
-        recordedKeys.push({
-            note: key,
-            time: audioContext.currentTime - startTime,
-        })
-
-        history.innerText += ` ${key} `;
     }
 });
 
 document.querySelector('#preview').onclick = () => {
     startTime = recordedKeys[0].time;
-    
+
     recordedKeys.forEach(key => {
         key.time -= startTime;
         setTimeout(() => {
@@ -226,10 +233,10 @@ document.querySelector('#export').onclick = () => {
 }
 
 function exportRecordedKeys() {
-    const blob = new Blob([JSON.stringify(recordedKeys)], {type: "application/json"});
+    const blob = new Blob([JSON.stringify(recordedKeys)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const newElement = document.createElement('a');
-   
+
     newElement.style.display = "none";
     newElement.href = url;
 
@@ -239,7 +246,7 @@ function exportRecordedKeys() {
         return;
     }
     newElement.download = fileName;
-   
+
     document.body.appendChild(newElement);
     newElement.click();
     window.URL.revokeObjectURL(url);
@@ -276,16 +283,18 @@ next.addEventListener('click', (ev) => {
 
     id = id == 4 ? 1 : ++id;
 
+    pianoNum.innerText = `Piano ${id}`
     changePiano(id);
 })
 
 prev.addEventListener('click', (ev) => {
-    const previous =  document.getElementById(`piano-${id}`);
+    const previous = document.getElementById(`piano-${id}`);
     previous.classList.remove('active');
 
     id = id == 1 ? 4 : --id;
 
     document.getElementById(`piano-${id}`).classList.add('active');
+    pianoNum.innerText = `Piano ${id}`
     changePiano(id);
 })
 
@@ -294,7 +303,7 @@ function changePiano(pos) {
     const visibleArr = Array.from(document.querySelectorAll(`#piano-${pos} div`));
     const keys = Array.from(keyBoard.keys());
     visibleArr.forEach((el, index) => {
-        if (index < keys.length) 
+        if (index < keys.length)
             keyBoard.set(keys[index], el.getAttribute('data-note'))
     })
 }
