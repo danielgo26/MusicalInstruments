@@ -10,6 +10,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['registerEmail'];
     $pwd = $_POST['registerPassword'];
 
+    validateUserInfo($usr, $pwd);
+
     try {
         require_once "dbh.inc.php";
         require_once "../models/User.php";
@@ -28,7 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         header("Location: ../index.html?success=registered");
-        
         exit();
     } catch (PDOException $e) {
         die("Query failed: " . $e->getMessage());
@@ -44,4 +45,25 @@ function sendRegistrationEmail($toEmail)
     $headers = "From: wcourse87@gmail.com";
 
     return mail($toEmail, $subject, $message, $headers);
+}
+
+function validateUserInfo($username, $password) {
+    $errors = false;
+
+    if (strlen($username) < 6 || strlen($password) < 6) {
+        $errors = true;
+    }
+
+    if (!preg_match('/[A-Z]/', $password)) {
+        $errors = true;
+    }
+
+    if (!preg_match('/[0-9]/', $password)) {
+        $errors = true;
+    }
+
+    if ($errors) {
+        header("Location: ../index.html?success=error");
+        exit();
+    }
 }
