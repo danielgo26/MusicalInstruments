@@ -14,15 +14,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         require_once "../models/User.php";
 
         $user = new User($pdo);
-        $userData = $user->findUserByUsername($usr);
-        
-        if ($userData && password_verify($pwd, $userData['password'])) {
-            $_SESSION['user_id'] = $userData['id'];
-            $_SESSION['username'] = $userData['username'];
-            $_SESSION['password'] = $userData['password'];
-            
+        $userDataList = $user->findUserByUsername($usr);
+
+        $matchedUser = null;
+        foreach ($userDataList as $userData) {
+            if (password_verify($pwd, $userData['password'])) {
+                $matchedUser = $userData;
+                break;
+            }
+        }
+
+        if ($matchedUser && password_verify($pwd, $matchedUser['password'])) {
+            $_SESSION['username'] = $matchedUser['username'];
+
             header("Location: ../../front_end/index.php");
-            
+
             exit();
         } else {
             header("Location: ../index.html?error=invalidcredentials");
@@ -35,4 +41,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location: ../index.html");
     exit();
 }
-?>

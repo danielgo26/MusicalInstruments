@@ -14,7 +14,7 @@ try {
 
     $pdo->exec("USE `$dbname`");
 
-     $pdo->exec("
+    $pdo->exec("
         CREATE TABLE IF NOT EXISTS users (
             username VARCHAR(20),
             email VARCHAR(30) NOT NULL,
@@ -27,5 +27,3 @@ try {
 } catch (PDOException $e) {
     die("Connection failed: " . $e->getMessage());
 }
-?>
-
