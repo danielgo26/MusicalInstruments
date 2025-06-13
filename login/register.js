@@ -28,11 +28,19 @@ window.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const success = params.get('success');
 
-  if (success === 'registered') {
+  if (success == 'registered') {
     const errorBox = document.getElementById('messages');
     if (errorBox) {
       errorBox.textContent = 'Successfully registered!';
       errorBox.style.color = 'green';
+    }
+  }
+  if (success == 'error') {
+    document.getElementById('register-btn').click();
+    const errorBox = document.getElementById('error');
+    if (errorBox) {
+      errorBox.style.fontSize = "13px";
+      errorBox.textContent = 'Username and password should be at least 6 symbols. Password should contain at least one uppercase letter and digit.';
     }
   }
 });
