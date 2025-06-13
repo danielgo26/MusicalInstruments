@@ -26,7 +26,8 @@ const pianoKeys = document.querySelectorAll(".piano-keys .key"),
   keysCheckbox = document.querySelector(".keys-checkbox input"),
   importMusicFile = document.getElementById("importMusicFile"),
   greeter = document.querySelector("#history #greeter"),
-  clear = document.querySelector("#clear"),
+  clearHistory = document.querySelector("#clear-history"),
+  clearLesson = document.querySelector("#clear-lesson"),
   chooseFile = document.querySelector("#chooseFile");
 lesson = document.querySelector("#lessons");
 
@@ -37,25 +38,27 @@ const mediaRecorder = new MediaRecorder(destination.stream);
 const pianoNum = document.getElementById("piano-num");
 
 const history = document.querySelector("#history");
+const lessonsHistory = document.querySelector("#lessons-history");
 
 let recordedChunks = [];
 let recordedKeys = [];
 let startTime = 0;
 let allKeys = [];
 
-const pressedKey = (e) => {
-  if (allKeys.includes(e.keyCode)) {
-    playSound(keyBoard[e.keyCode]);
-    history.innerText += ` ${keyBoard[e.key]} `;
-  }
-};
+// const pressedKey = (e) => {
+//   if (allKeys.includes(e.keyCode)) {
+//     playSound(keyBoard[e.keyCode]);
+//     history.innerText += ` ${keyBoard[e.key]} `;
+//   }
+// };
 
 //lessons logic
 
 lesson.addEventListener("click", (ev) => {
   fileSource = "lessons";
   ev.preventDefault();
-  clear.click();
+  clearHistory.click();
+  clearLesson.click();
   importMusicFile.click();
 });
 
@@ -114,8 +117,9 @@ const importRecordedKeysForRead = (file) => {
 
     if (keys.length === 0) return;
 
+    lessonsHistory.innerText = "Notes: ";
     keys.forEach((key) => {
-      history.innerText += ` ${key.note} `;
+      lessonsHistory.innerText += ` ${key.note} `;
     });
   };
 
@@ -137,6 +141,9 @@ pianoKeys.forEach((key) => {
 
 keys.forEach((div) => {
   div.addEventListener("click", (event) => {
+    if (recordedKeys.length === 0) {
+      startTime = audioContext.currentTime;
+    }
     recordedKeys.push({
       note: `${div.getAttribute("data-note")}`,
       time: audioContext.currentTime - startTime,
@@ -147,31 +154,6 @@ keys.forEach((div) => {
     playSound(div.getAttribute("data-note"));
   });
 });
-
-let audio;
-
-const playSound = (note) => {
-  if (!audioContext) {
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  } else if (audioContext.state === "suspended") {
-    audioContext.resume();
-  }
-
-  audio = new Audio(`../music_sounds/${note}.mp3`);
-  const sound = audioContext.createMediaElementSource(audio);
-  sound.connect(audioContext.destination);
-  sound.connect(destination);
-
-  const clickedKey = document.querySelector(`[data-note="${note}"]`);
-  if (clickedKey) {
-    clickedKey.classList.add("active");
-    setTimeout(() => {
-      clickedKey.classList.remove("active");
-    }, 150);
-  }
-
-  audio.play();
-};
 
 document.addEventListener("keydown", (ev) => {
   if (ev.repeat) return;
@@ -199,6 +181,31 @@ document.addEventListener("keydown", (ev) => {
   }
 });
 
+let audio;
+
+const playSound = (note) => {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  } else if (audioContext.state === "suspended") {
+    audioContext.resume();
+  }
+
+  audio = new Audio(`../music_sounds/${note}.mp3`);
+  const sound = audioContext.createMediaElementSource(audio);
+  sound.connect(audioContext.destination);
+  sound.connect(destination);
+
+  const clickedKey = document.querySelector(`[data-note="${note}"]`);
+  if (clickedKey) {
+    clickedKey.classList.add("active");
+    setTimeout(() => {
+      clickedKey.classList.remove("active");
+    }, 150);
+  }
+
+  audio.play();
+};
+
 //show keys button logic
 
 const showHideKeys = () => {
@@ -207,10 +214,14 @@ const showHideKeys = () => {
 
 keysCheckbox.addEventListener("click", showHideKeys);
 
-clear.addEventListener("click", () => {
+clearHistory.addEventListener("click", () => {
   history.innerText = "";
   recordedKeys = [];
   startTime = 0;
+});
+
+clearLesson.addEventListener("click", () => {
+  lessonsHistory.innerText = "";
 });
 
 //file exporting logic
@@ -218,9 +229,9 @@ clear.addEventListener("click", () => {
 document.querySelector("#export").onclick = () => {
   mediaRecorder.stop();
 
-  recordedKeys.forEach((key) => {
-    key.time = recordedKeys[0].time;
-  });
+  //recordedKeys.forEach((key) => {
+  //key.time = recordedKeys[0].time;
+  //});
 
   exportRecordedKeys();
 };
@@ -245,21 +256,17 @@ function exportRecordedKeys() {
   document.body.appendChild(newElement);
   newElement.click();
   window.URL.revokeObjectURL(url);
-
-  recordedKeys = [];
 }
 
 //music preview logic
 
 document.querySelector("#preview").onclick = () => {
-  if (recordedKeys.length === 0) return;
-
-  if (!startTime || startTime === 0) {
-    startTime = recordedKeys[0].time ?? audioContext.currentTime;
+  if (recordedKeys.length === 0) {
+    history.innerText = "Nothing for preview!";
+    return;
   }
 
   recordedKeys.forEach((key) => {
-    key.time -= startTime;
     setTimeout(() => {
       playSound(key.note);
     }, key.time * 1000);

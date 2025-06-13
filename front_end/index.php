@@ -46,6 +46,9 @@ if ($_SESSION['username'] == null) {
             <div class="try" id="history">
                 <h2 id="greeter">Hello, <?php echo $_SESSION['username']; ?>!</h2>
             </div>
+            <div class="try" id="lessons-history">
+                
+            </div>
 
             <div class="wrapper">
                 <div id="piano-num">Piano 1</div>
@@ -54,8 +57,9 @@ if ($_SESSION['username'] == null) {
                    
                     <button class="btn" id="preview">Preview</button>
                     <button class="btn" id="export">Export current</button>
-                    <button class="btn" id="clear">Clear</button>
-                    <button class="btn" href="#" id="chooseFile">Choose file</button>
+                    <button class="btn" id="clear-history">Clear history</button>
+                    <button class="btn" id="clear-lesson">Clear lesson</button>
+                    <button class="btn" href="#" id="chooseFile">Play file</button>
                     <input class="btn" type="file" id="importMusicFile" style="display:none;" />
                     <button class="btn" id="lessons">Lessons</button>
                     <div class="column keys-checkbox">
