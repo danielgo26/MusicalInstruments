@@ -199,20 +199,6 @@ document.addEventListener("keydown", (ev) => {
   }
 });
 
-document.querySelector('#preview').onclick = () => {
-    if (recordedKeys.length == 0) {
-        return;
-    }
-
-    startTime = recordedKeys[0].time;
-
-    recordedKeys.forEach(key => {
-        key.time -= startTime;
-        setTimeout(() => {
-            playSound(key.note)
-        }, key.time * 1000);
-    });
-}
 //show keys button logic
 
 const showHideKeys = () => {
@@ -232,20 +218,12 @@ clear.addEventListener("click", () => {
 document.querySelector("#export").onclick = () => {
   mediaRecorder.stop();
 
-  exportRecordedKeys();
-document.querySelector('#export').onclick = () => {
-    mediaRecorder.stop();
-    console.log('Recording stopped');
-
-    recordedKeys.forEach((key) => {
-        key.time -= recordedKeys[0].time;
-    });
   recordedKeys.forEach((key) => {
     key.time = recordedKeys[0].time;
   });
 
-    exportRecordedKeys();
-}
+  exportRecordedKeys();
+};
 
 function exportRecordedKeys() {
   const blob = new Blob([JSON.stringify(recordedKeys)], {
