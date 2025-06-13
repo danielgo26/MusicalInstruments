@@ -164,7 +164,7 @@ error_reporting(E_ALL);
                 </div>
             </div>
 
-            <div id="history"></div>
+            <!-- <div id="history"></div> -->
             <script src="index.js"></script>
         </div>
     </div>

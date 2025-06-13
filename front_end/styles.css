@@ -14,14 +14,18 @@ body{
 .try {
   margin-left: auto;
   margin-right: auto;
-  margin-top: 50px;
-  height: 100px;
+  margin-top: 27px;
+  height: 60px;
   text-align: center;
   overflow: auto;
   width: 70%;
   color: rgb(0, 0, 0);
   font-size: 23px;
   font-weight: 500;
+}
+
+#lessons-history {
+  margin-top: 2px;
 }
 
 main {
@@ -318,7 +322,8 @@ header input {
 
 .piano-keys .black span {
   bottom: 13px;
-  color: #888888;
+  color: #afafaf;
+  font-size: 14px;
 }
 
 footer {
