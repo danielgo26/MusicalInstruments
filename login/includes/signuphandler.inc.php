@@ -18,8 +18,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $user = new User($pdo);
 
-        $hashedPwd = password_hash($pwd, PASSWORD_DEFAULT);
+        if ($user->findUserByUsernameAndPassword($usr, $pwd) != null) {
+            header("Location: ../index.html?success=used-credentials");
+            exit();
+        }
 
+        $hashedPwd = password_hash($pwd, PASSWORD_DEFAULT);
         $user->createUser($usr, $email, $hashedPwd);
 
         $pdo = null;
@@ -63,7 +67,7 @@ function validateUserInfo($username, $password) {
     }
 
     if ($errors) {
-        header("Location: ../index.html?success=error");
+        header("Location: ../index.html?success=invalid-credentials");
         exit();
     }
 }

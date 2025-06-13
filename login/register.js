@@ -34,13 +34,19 @@ window.addEventListener('DOMContentLoaded', () => {
       errorBox.textContent = 'Successfully registered!';
       errorBox.style.color = 'green';
     }
-  }
-  if (success == 'error') {
+  } else if (success == 'invalid-credentials') {
     document.getElementById('register-btn').click();
     const errorBox = document.getElementById('error');
     if (errorBox) {
       errorBox.style.fontSize = "13px";
       errorBox.textContent = 'Username and password should be at least 6 symbols. Password should contain at least one uppercase letter and digit.';
+    }
+  } else if (success == 'used-credentials') {
+    document.getElementById('register-btn').click();
+    const errorBox = document.getElementById('error');
+    if (errorBox) {
+      errorBox.style.fontSize = "13px";
+      errorBox.textContent = 'There is already an account with such credentials.';
     }
   }
 });
