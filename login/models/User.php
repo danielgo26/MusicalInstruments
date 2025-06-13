@@ -1,18 +1,22 @@
 <?php
-class User {
+class User
+{
     private $pdo;
 
-    public function __construct($pdo) {
+    public function __construct($pdo)
+    {
         $this->pdo = $pdo;
     }
 
-    public function findUserByUsername($username) {
-        $stmt = $this->pdo->prepare('SELECT * FROM  users WHERE username = :username');
+    public function findUserByUsername($username)
+    {
+        $stmt = $this->pdo->prepare('SELECT * FROM users WHERE username = :username');
         $stmt->execute(['username' => $username]);
-        return $stmt->fetch();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function createUser($username, $email, $password) {
+    public function createUser($username, $email, $password)
+    {
         $stmt = $this->pdo->prepare('INSERT INTO users (username, email, password) VALUES (:username, :email, :password)');
         return $stmt->execute(['username' => $username, 'email' => $email, 'password' => $password]);
     }

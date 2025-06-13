@@ -1,297 +1,338 @@
 const keyBoard = new Map([
-    ['q', 'C1'],
-    ['1', 'Db1'],
-    ['w', 'D1'],
-    ['2', 'Eb1'],
-    ['e', 'E1'],
-    ['r', 'F1'],
-    ['4', 'Gb1'], 
-    ['t', 'G1'],
-    ['5', 'Ab1'], 
-    ['y', 'A1'],
-    ['7', 'Bb1'],
-    ['u', 'B1'],
-    ['i', 'C2'],
-    ['8', 'Db2'],
-    ['o', 'D2'],
-    ['9', 'Eb2'],
-    ['p', 'E2'],
-    ['[', 'F2'],
-    [']', 'G2'],
-    [`\\`, 'A2']
+  ["q", "C1"],
+  ["1", "Db1"], //b
+  ["w", "D1"],
+  ["2", "Eb1"], //b
+  ["e", "E1"],
+  ["3", "Gb1"], //b
+  ["r", "F1"],
+  ["t", "G1"],
+  ["4", "Ab1"], //b
+  ["y", "A1"],
+  ["5", "Bb1"], //b
+  ["u", "B1"],
+  ["6", "Db2"], //b
+  ["i", "C2"],
+  ["o", "D2"],
+  ["7", "Eb2"], //b
+  ["p", "E2"],
+  ["8", "Gb2"], //b
+  ["[", "F2"],
+  [`9`, "Ab2"], //b
+  [`]`, "G2"],
 ]);
 
 const pianoKeys = document.querySelectorAll(".piano-keys .key"),
-volumeSlider = document.querySelector(".volume-slider input"),
-keysCheckbox = document.querySelector(".keys-checkbox input"),
-importMusicFile = document.getElementById('importMusicFile'),
-greeter = document.querySelector('#history #greeter'),
-clear = document.querySelector('#clear'),
-chooseFile = document.querySelector('#chooseFile');
+  keysCheckbox = document.querySelector(".keys-checkbox input"),
+  importMusicFile = document.getElementById("importMusicFile"),
+  greeter = document.querySelector("#history #greeter"),
+  clearHistory = document.querySelector("#clear-history"),
+  clearLesson = document.querySelector("#clear-lesson"),
+  chooseFile = document.querySelector("#chooseFile");
+lesson = document.querySelector("#lessons");
 
 const keys = document.querySelectorAll(".key");
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 const destination = audioContext.createMediaStreamDestination();
 const mediaRecorder = new MediaRecorder(destination.stream);
+const pianoNum = document.getElementById("piano-num");
 
-//TESTING
-const history = document.querySelector('#history');
+const history = document.querySelector("#history");
+const lessonsHistory = document.querySelector("#lessons-history");
 
 let recordedChunks = [];
 let recordedKeys = [];
 let startTime = 0;
 let allKeys = [];
 
-pianoKeys.forEach(key => {
-    allKeys.push(key.getAttribute('data-note')); // adding data-note value to the allKeys array
-    
-    key.addEventListener("click", () => {
-        if(recordedKeys.length === 0) {
-            greeter.innerHTML = '';
-        }
-        playSound(key.getAttribute('data-note'));
+// const pressedKey = (e) => {
+//   if (allKeys.includes(e.keyCode)) {
+//     playSound(keyBoard[e.keyCode]);
+//     history.innerText += ` ${keyBoard[e.key]} `;
+//   }
+// };
 
-       
-    })
+//lessons logic
+
+lesson.addEventListener("click", (ev) => {
+  fileSource = "lessons";
+  ev.preventDefault();
+  clearHistory.click();
+  clearLesson.click();
+  importMusicFile.click();
 });
-let audio;
 
+//import music file logic
 
-//TO FIX
-const handleVolume = (e) => {
-    //window.sound = 0;
-    console.log(e.target.value)
-};
+let fileSource = null;
 
-const showHideKeys = () => {
-pianoKeys.forEach(key => key.classList.toggle("hide"));
-};
+chooseFile.addEventListener("click", (ev) => {
+  fileSource = "chooseFile";
+  ev.preventDefault();
+  importMusicFile.click();
+});
 
-const pressedKey = (e) => {
-    if (allKeys.includes(e.key))  {
-        playSound(keyBoard[e.key]);
-    
-        history.innerText += ` ${keyBoard[e.key]} `;
+importMusicFile.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+
+  if (file.type === "application/json") {
+    if (fileSource == "chooseFile") {
+      importRecordedKeys(file);
+    }
+    if (fileSource == "lessons") {
+      importRecordedKeysForRead(file);
     }
 
+    fileSource = null;
+    importMusicFile.value = "";
+  }
+});
+
+const importRecordedKeys = (file) => {
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const recordedKeys = JSON.parse(ev.target.result);
+    replayRecordedKeys(recordedKeys);
+  };
+
+  reader.readAsText(file);
 };
 
 const replayRecordedKeys = (recordedKeys) => {
+  if (recordedKeys.length === 0) return;
 
-    if(recordedKeys.length === 0) return;
+  recordedKeys.forEach((key) => {
+    setTimeout(() => {
+      playSound(key.note);
+    }, key.time * 1000);
+  });
+};
 
-    recordedKeys.forEach(key => {
-        setTimeout(() => {
-            playSound(key.note)
-        }, key.time * 1000);
+const importRecordedKeysForRead = (file) => {
+  const reader = new FileReader();
+
+  reader.onload = (ev) => {
+    const keys = JSON.parse(ev.target.result);
+    recordedKeys = keys;
+
+    if (keys.length === 0) return;
+
+    lessonsHistory.innerText = "Notes: ";
+    keys.forEach((key) => {
+      lessonsHistory.innerText += ` ${key.note} `;
     });
-}
+  };
 
-const importRecordedKeys = (file) => {
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-        const recordedKeys = JSON.parse(ev.target.result);
-        replayRecordedKeys(recordedKeys);
+  reader.readAsText(file);
+};
+
+//piano keys logic (mouse + keyboard)
+
+pianoKeys.forEach((key) => {
+  allKeys.push(key.getAttribute("data-note"));
+
+  key.addEventListener("click", () => {
+    if (recordedKeys.length === 0) {
+      greeter.innerHTML = "";
     }
-
-    reader.readAsText(file);
-}
-
-keysCheckbox.addEventListener("click", showHideKeys);
-volumeSlider.addEventListener("click", handleVolume);
-clear.addEventListener("click", () => {
-    history.innerText = '';
-    recordedKeys = [];
-})
-
-chooseFile.addEventListener("click" , (ev) => {
-    ev.preventDefault();
-    importMusicFile.click();
+    playSound(key.getAttribute("data-note"));
+  });
 });
-
-importMusicFile.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    
-    if (file.type === "application/json") {
-        importRecordedKeys(file);
-    }
-});
-//
 
 keys.forEach((div) => {
-    div.addEventListener('click', (event) => {
-        console.log(div.getAttribute('data-note'));
-
-        recordedKeys.push({
-            note: `${div.getAttribute('data-note')}`,
-            time: (audioContext.currentTime - startTime),
-        })
-
-        console.log(audioContext.currentTime - startTime);
-
-        //ADDED recently
-        history.innerText += ` ${div.getAttribute('data-note')} `;
-
-        playSound(div.getAttribute('data-note'));
+  div.addEventListener("click", (event) => {
+    if (recordedKeys.length === 0) {
+      startTime = audioContext.currentTime;
+    }
+    recordedKeys.push({
+      note: `${div.getAttribute("data-note")}`,
+      time: audioContext.currentTime - startTime,
     });
+
+    history.innerText += ` ${div.getAttribute("data-note")} `;
+
+    playSound(div.getAttribute("data-note"));
+  });
 });
 
+document.addEventListener("keydown", (ev) => {
+  if (ev.repeat) return;
+
+  if (ev.key == "ArrowLeft") {
+    prev.click();
+  } else if (ev.key == "ArrowRight") {
+    next.click();
+  } else {
+    const key = keyBoard.get(ev.key);
+
+    if (key) {
+      playSound(key);
+
+      if (recordedKeys.length === 0) {
+        history.innerHTML = "";
+      }
+      recordedKeys.push({
+        note: key,
+        time: audioContext.currentTime - startTime,
+      });
+
+      history.innerText += ` ${key} `;
+    }
+  }
+});
+
+let audio;
 
 const playSound = (note) => {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  } else if (audioContext.state === "suspended") {
+    audioContext.resume();
+  }
 
-    if (!audioContext) {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    } else if (audioContext.state === 'suspended') {
-        audioContext.resume();
-    }
+  audio = new Audio(`../music_sounds/${note}.mp3`);
+  const sound = audioContext.createMediaElementSource(audio);
+  sound.connect(audioContext.destination);
+  sound.connect(destination);
 
-    audio = new Audio(`../music_sounds/${note}.mp3`); 
+  const clickedKey = document.querySelector(`[data-note="${note}"]`);
+  if (clickedKey) {
+    clickedKey.classList.add("active");
+    setTimeout(() => {
+      clickedKey.classList.remove("active");
+    }, 150);
+  }
 
-    const clickedKey = document.querySelector(`[data-note="${note}"]`); 
-    if (clickedKey) {
-        clickedKey.classList.add("active"); 
-        setTimeout(() => { 
-            clickedKey.classList.remove("active");
-        }, 150);
-    }
+  audio.play();
+};
 
-    const sound = audioContext.createMediaElementSource(audio);
-    sound.connect(audioContext.destination);
-    sound.connect(destination);
-    audio.play();
-}
+//show keys button logic
 
-document.addEventListener('keydown', (ev) => {
-    if(ev.repeat) 
-        return;
-    
-    const key = keyBoard.get(ev.key);
-    if(key)  {
-        playSound(key);
+const showHideKeys = () => {
+  pianoKeys.forEach((key) => key.classList.toggle("hide"));
+};
 
-        if (recordedKeys.length === 0) {
-            history.innerHTML = '';
-        }
-        recordedKeys.push({
-            note: key,
-            time: audioContext.currentTime - startTime,
-        })
+keysCheckbox.addEventListener("click", showHideKeys);
 
-        history.innerText += ` ${key} `;
-    }
+clearHistory.addEventListener("click", () => {
+  history.innerText = "";
+  recordedKeys = [];
+  startTime = 0;
 });
 
-document.querySelector('#preview').onclick = () => {
-    startTime = recordedKeys[0].time;
-    
-    recordedKeys.forEach(key => {
-        key.time -= startTime;
-        setTimeout(() => {
-            playSound(key.note)
-        }, key.time * 1000);
-    });
+clearLesson.addEventListener("click", () => {
+  lessonsHistory.innerText = "";
+});
 
-}
+//file exporting logic
 
-document.querySelector('#export').onclick = () => {
-    mediaRecorder.stop();
-    console.log('Recording stopped');
-    exportRecordedKeys();
+document.querySelector("#export").onclick = () => {
+  mediaRecorder.stop();
 
-    recordedKeys.forEach((key) => {
-        key.time = recordedKeys[0].time;
-    });
+  //recordedKeys.forEach((key) => {
+  //key.time = recordedKeys[0].time;
+  //});
 
-    startTime = 0;
-}
+  exportRecordedKeys();
+};
 
 function exportRecordedKeys() {
-    const blob = new Blob([JSON.stringify(recordedKeys)], {type: "application/json"});
-    const url = URL.createObjectURL(blob);
-    const newElement = document.createElement('a');
-   
-    newElement.style.display = "none";
-    newElement.href = url;
+  const blob = new Blob([JSON.stringify(recordedKeys)], {
+    type: "application/json",
+  });
+  const url = URL.createObjectURL(blob);
+  const newElement = document.createElement("a");
 
-    const fileName = window.prompt('Save file as:');
-    newElement.download = fileName;
-   
-    document.body.appendChild(newElement);
-    newElement.click();
-    window.URL.revokeObjectURL(url);
+  newElement.style.display = "none";
+  newElement.href = url;
 
-    recordedKeys = [];
+  const fileName = window.prompt("Save file as:");
+
+  if (fileName === null || fileName.trim() === "") {
+    return;
+  }
+  newElement.download = fileName;
+
+  document.body.appendChild(newElement);
+  newElement.click();
+  window.URL.revokeObjectURL(url);
 }
 
+//music preview logic
+
+document.querySelector("#preview").onclick = () => {
+  if (recordedKeys.length === 0) {
+    history.innerText = "Nothing for preview!";
+    return;
+  }
+
+  recordedKeys.forEach((key) => {
+    setTimeout(() => {
+      playSound(key.note);
+    }, key.time * 1000);
+  });
+};
+
+//music recording logic
 
 mediaRecorder.ondataavailable = (event) => {
-    if (event.data.size > 0) {
-        recordedChunks.push(event.data);
-    }
-}
+  if (event.data.size > 0) {
+    recordedChunks.push(event.data);
+  }
+};
 
 mediaRecorder.onstop = () => {
-    const blob = new Blob(recordedChunks, { type: 'audio/webm' });
-    recordedChunks = [];
-    const audioURL = URL.createObjectURL(blob);
-    const audioElement = document.createElement('audio');
-    audioElement.controls = true;
-    audioElement.src = audioURL;
-    document.body.appendChild(audioElement);
-}
+  const blob = new Blob(recordedChunks, { type: "audio/webm" });
+  recordedChunks = [];
+  const audioURL = URL.createObjectURL(blob);
+  const audioElement = document.createElement("audio");
+  audioElement.controls = true;
+  audioElement.src = audioURL;
+  document.body.appendChild(audioElement);
+};
+
+//piano keyboards change logic
 
 let id = 1;
-document.getElementById(`piano-${id}`).classList.add('active');
+document.getElementById(`piano-${id}`).classList.add("active");
 
-const next = document.getElementById('next');
-const prev = document.getElementById('prev');
+const next = document.getElementById("next");
+const prev = document.getElementById("prev");
 
-next.addEventListener('click', (ev) => {
-    const previousKeyBoard = document.getElementById(`piano-${id}`);
-    previousKeyBoard.classList.remove('active');
+next.addEventListener("click", (ev) => {
+  const previousKeyBoard = document.getElementById(`piano-${id}`);
+  previousKeyBoard.classList.remove("active");
 
-    id = id == 4 ? 1 : ++id;
+  id = id == 4 ? 1 : ++id;
 
-    changePiano(id);
-})
+  pianoNum.innerText = `Piano ${id}`;
+  changePiano(id);
+});
 
-prev.addEventListener('click', (ev) => {
-    const previous =  document.getElementById(`piano-${id}`);
-    previous.classList.remove('active');
+prev.addEventListener("click", (ev) => {
+  const previous = document.getElementById(`piano-${id}`);
+  previous.classList.remove("active");
 
-    id = id == 1 ? 4 : --id;
+  id = id == 1 ? 4 : --id;
 
-    document.getElementById(`piano-${id}`).classList.add('active');
-    changePiano(id);
-})
+  document.getElementById(`piano-${id}`).classList.add("active");
+  pianoNum.innerText = `Piano ${id}`;
+  changePiano(id);
+});
 
 function changePiano(pos) {
-    
-    document.getElementById(`piano-${pos}`).classList.add('active');
+  document.getElementById(`piano-${pos}`).classList.add("active");
+  const visibleArr = Array.from(document.querySelectorAll(`#piano-${pos} div`));
+  const keys = Array.from(keyBoard.keys());
 
-    const visibleArr = Array.from(document.querySelectorAll(`#piano-${pos} div`));
+  let lastKeyBoardIndex = 0;
+  visibleArr.forEach((el, index) => {
+    if (index < keys.length)
+      keyBoard.set(keys[index], el.getAttribute("data-note"));
+    ++lastKeyBoardIndex;
+  });
 
-    const keys = Array.from(keyBoard.keys());
-    visibleArr.forEach((el, index) => {
-        if (index < keys.length) 
-            keyBoard.set(keys[index], el.getAttribute('data-note'))
-    })
-   
+  while (lastKeyBoardIndex < keys.length) {
+    keyBoard.set(keys[lastKeyBoardIndex++], undefined);
+  }
 }
-
-
-document.querySelector('#share').addEventListener('click', (ev) => {
-    const blob = new Blob([JSON.stringify(recordedKeys)], {'type': 'application/json'});
-   
-    const url = URL.createObjectURL(blob);
-
-    const element = document.createElement('a');
-
-    element.href = url;
-    element.textContent = "daka";
-    element.onclick = () => {
-        element.download = element.textContent;
-    }
-    document.body.appendChild(element);
-
-})
