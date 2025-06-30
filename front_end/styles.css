@@ -32,7 +32,6 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* min-height: 68vh; */
   background: rgb(207, 188, 164);
 }
 
@@ -46,6 +45,29 @@ main {
   position: relative;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.lib {
+  text-align: center;
+  margin-top: 250px;
+}
+
+.lib div button {
+  border: none;
+  background-color: #000;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  font-size: 18px;
+  height: 50px;
+  width: 300px;
+  border: 1px solid #fff;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.941)
+}
+
+.lib div button:hover {
+  cursor: pointer;
 }
 
 .logo span {
@@ -66,6 +88,20 @@ main {
   font-weight: bold;
   font-size: 20px;
   transition: 0.3s ease;
+}
+
+#library {
+  background-color: transparent;
+  color: rgba(52, 49, 49, 0.91);
+  border: none;
+  font-weight: bold;
+  font-size: 20px;
+  transition: 0.3s ease;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+#library:hover {
+  cursor: pointer;
 }
 
 .navbar a.logout-btn:hover {

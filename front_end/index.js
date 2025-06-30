@@ -45,13 +45,6 @@ let recordedKeys = [];
 let startTime = 0;
 let allKeys = [];
 
-// const pressedKey = (e) => {
-//   if (allKeys.includes(e.keyCode)) {
-//     playSound(keyBoard[e.keyCode]);
-//     history.innerText += ` ${keyBoard[e.key]} `;
-//   }
-// };
-
 //lessons logic
 
 lesson.addEventListener("click", (ev) => {
@@ -98,7 +91,30 @@ const importRecordedKeys = (file) => {
   reader.readAsText(file);
 };
 
-const replayRecordedKeys = (recordedKeys) => {
+function playSound(note) {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  } else if (audioContext.state === "suspended") {
+    audioContext.resume();
+  }
+
+  const audio = new Audio(`../music_sounds/${note}.mp3`);
+  const sound = audioContext.createMediaElementSource(audio);
+  sound.connect(audioContext.destination);
+  sound.connect(destination);
+
+  const clickedKey = document.querySelector(`[data-note="${note}"]`);
+  if (clickedKey) {
+    clickedKey.classList.add("active");
+    setTimeout(() => {
+      clickedKey.classList.remove("active");
+    }, 150);
+  }
+
+  audio.play();
+};
+
+function replayRecordedKeys(recordedKeys) {
   if (recordedKeys.length === 0) return;
 
   recordedKeys.forEach((key) => {
@@ -107,6 +123,11 @@ const replayRecordedKeys = (recordedKeys) => {
     }, key.time * 1000);
   });
 };
+
+function playLibSong(notes) {
+    const recordedKeys = JSON.parse(notes);
+    replayRecordedKeys(recordedKeys);
+}
 
 const importRecordedKeysForRead = (file) => {
   const reader = new FileReader();
@@ -183,29 +204,6 @@ document.addEventListener("keydown", (ev) => {
 
 let audio;
 
-const playSound = (note) => {
-  if (!audioContext) {
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  } else if (audioContext.state === "suspended") {
-    audioContext.resume();
-  }
-
-  audio = new Audio(`../music_sounds/${note}.mp3`);
-  const sound = audioContext.createMediaElementSource(audio);
-  sound.connect(audioContext.destination);
-  sound.connect(destination);
-
-  const clickedKey = document.querySelector(`[data-note="${note}"]`);
-  if (clickedKey) {
-    clickedKey.classList.add("active");
-    setTimeout(() => {
-      clickedKey.classList.remove("active");
-    }, 150);
-  }
-
-  audio.play();
-};
-
 //show keys button logic
 
 const showHideKeys = () => {
@@ -228,11 +226,6 @@ clearLesson.addEventListener("click", () => {
 
 document.querySelector("#export").onclick = () => {
   mediaRecorder.stop();
-
-  //recordedKeys.forEach((key) => {
-  //key.time = recordedKeys[0].time;
-  //});
-
   exportRecordedKeys();
 };
 

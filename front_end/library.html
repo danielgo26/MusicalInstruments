@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melody Mind</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="index.js" defer></script>
+</head>
+
+<body>
+    <div class="background">
+        <div class="blurred">
+            <header id="menu">
+                <div class="logo">
+                    <span>Melody Mind</span>
+                </div>
+
+                <nav class="navbar">
+                    <a href="./index.php">Home</a>
+                    <a href="../login/includes/logout.php">LogOut</a>
+                </nav>
+
+                <div class="floating-notes">
+                    <span class="note">♪</span>
+                    <span class="note">♬</span>
+                    <span class="note">♩</span>
+                    <span class="note">♫</span>
+                    <span class="note">♯</span>
+                    <span class="note">♪</span>
+                </div>
+            </header>
+
+            <div class="lib"></div>
+
+            <script>
+                window.onload = function () {
+                    fetch('./songshandler.php')
+                        .then(response => response.text())
+                        .then(data => {
+                            document.querySelector('.lib').innerHTML = data;
+                            console.log("Successfully loaded!");
+                        })
+                        .catch(err => {
+                            console.error('Loading failed:', err);
+                        });
+                };
+            </script>
+        </div>
+    </div>
+</body>
+
+</html>

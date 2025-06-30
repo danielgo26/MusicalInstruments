@@ -30,6 +30,7 @@ error_reporting(E_ALL);
                 </div>
 
                 <nav class="navbar">
+                    <a href="./library.html">Library</a>
                     <a href="../login/includes/logout.php">LogOut</a>
                 </nav>
 
@@ -46,9 +47,7 @@ error_reporting(E_ALL);
             <div class="try" id="history">
                 <h2 id="greeter">Hello, <?php echo $_SESSION['username']; ?>!</h2>
             </div>
-            <div class="try" id="lessons-history">
-                
-            </div>
+            <div class="try" id="lessons-history"></div>
 
             <div class="wrapper">
                 <div id="piano-num">Piano 1</div>
@@ -164,7 +163,6 @@ error_reporting(E_ALL);
                 </div>
             </div>
 
-            <!-- <div id="history"></div> -->
             <script src="index.js"></script>
         </div>
     </div>
